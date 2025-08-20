@@ -1,0 +1,198 @@
+
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <br>
+
+    <a data-toggle="modal" class="btn btn-primary" id="btn_nuevo_Autor" (click)="ShowModal(true,'Registro')">Nuevo Calificacion</a>
+
+  </div>
+
+  <div class="col-lg-2">
+  </div>
+
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+
+        <div class="ibox-title">
+          <h5 align="center">Listado de Calificaciones Existentes en el Sistema</h5>
+
+          <div class="ibox-tools">
+            <a class="collapse-link">
+              <i class="fa fa-chevron-up"></i>
+            </a>
+
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="fa fa-wrench"></i>
+            </a>
+
+            <ul class="dropdown-menu dropdown-user">
+              <li>
+
+              </li>
+
+            </ul>
+
+            <a class="close-link">
+              <i class="fa fa-times"></i>
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div class="ibox-content">
+          <div class="table-responsive">
+
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+
+              <thead>
+                <tr>
+
+                  <th>Id</th>
+                  <th>Estudiante Id</th>
+                  <th>CursoId</th>
+                  <th>Calificacion</th>
+                  <th>Fecha</th>
+
+
+                  <th> </th>
+                  <th> </th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+
+                <tr *ngFor="let item of List">
+
+                  <td> {{item.GradeId}} </td>
+                  <td> {{item.StudentId}} </td>
+                  <td> {{item.CourseId}} </td>
+                  <td> {{item.GradeValue}} </td>
+                  <td> {{item.GradeDate}} </td>
+
+                  <td>
+                    <a (click)="ViewGrade(item.GradeId)" title="Modificar Calificacion" data-toggle="modal" id="{{item.GradeId}}"><i class="fa fa-edit"></i></a>
+                  </td>
+
+                  <td>
+                    <a (click)="DeleteGrade(item.GradeId)" title="Eliminar Calificacion" data-toggle="modal" id="{{item.GradeId}}"><i class="fa fa-trash"></i></a>
+                  </td>
+
+
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+
+                  <th>Id</th>
+                  <th>Estudiante Id</th>
+                  <th>CursoId</th>
+                  <th>Calificacion</th>
+                  <th>Fecha</th>
+
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--Estructura del Modal-->
+<div class="modal inmodal" id="myModal2" [ngClass]="{'show':showModal}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content animated flipInY">
+      <div id="contenido">
+
+        <form (submit)="SaveChanges()" [formGroup]="form">
+
+          <div class="modal-header">
+            <button (click)="ShowModal(false,'Registro')" type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 style="color:#4c95ff" class="modal-title">Formulario de {{Action}} de Calificacion</h4>
+          </div>
+          <div class="modal-body">
+
+            <div class="row">
+
+              <div class="col-sm-4 b-r">
+                <h3 class="m-t-none m-b"></h3>
+
+                <input type="hidden" class="form-control" formControlName="GradeId" />
+
+
+                <div class="form-group">
+                  <label>Estudiante</label>
+                  <select class="form-control" formControlName="StudentId">
+                    <option *ngIf="Action=='Registro'" value="" selected>Seleccione una opción</option>
+                    <option *ngFor="let item of ListStudents" value="{{item.Value}}">{{item.Text}}</option>
+                  </select>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Curso</label>
+                  <select class="form-control" formControlName="CourseId">
+                    <option *ngIf="Action=='Registro'" value="" selected>Seleccione una opción</option>
+                    <option *ngFor="let item of ListCourses" value="{{item.Value}}">{{item.Text}}</option>
+                  </select>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Calificacion</label>
+                  <input type="number" class="form-control" formControlName="GradeValue" min="0" max="10" step="0.01" />
+                  <div *ngIf="form.get('GradeValue')?.errors?.min && form.get('GradeValue')?.touched">
+                    La calificación no puede ser menor que 0
+                  </div>
+                  <div *ngIf="form.get('GradeValue')?.errors?.max && form.get('GradeValue')?.touched">
+                    La calificación no puede ser mayor que 10
+                  </div>
+                  <div *ngIf="form.get('GradeValue')?.errors?.required && form.get('GradeValue')?.touched">
+                    La calificación es obligatoria
+                  </div>
+                </div>
+ 
+
+                <div class="form-group">
+                  <label>Fecha</label>
+                  <input type="date" class="form-control" formControlName="GradeDate" />
+                </div>
+
+
+              </div>
+
+
+              <div class="col-sm-4  b-r">
+                <br>
+
+
+
+              </div>
+
+
+
+              <div class="col-sm-4 "></div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="BotonRegistrar" type="submit"><strong>Registrar</strong></button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
